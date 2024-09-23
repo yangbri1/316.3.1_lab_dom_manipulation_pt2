@@ -9,12 +9,29 @@
 /* Below is the code from 316.1.1 DOM Manipulation pt.1 lab */
 
 // Menu data structure -- similar to JSON learn later
+// var menuLinks = [
+//     { text: 'about', href: '/about' },
+//     { text: 'catalog', href: '/catalog' },
+//     { text: 'orders', href: '/orders' },
+//     { text: 'account', href: '/account' },
+//   ];
 var menuLinks = [
-    { text: 'about', href: '/about' },
-    { text: 'catalog', href: '/catalog' },
-    { text: 'orders', href: '/orders' },
-    { text: 'account', href: '/account' },
-  ];
+  {text: 'about', href: '/about'},
+  {text: 'catalog', href: '#', subLinks: [
+    {text: 'all', href: '/catalog/all'},
+    {text: 'top selling', href: '/catalog/top'},
+    {text: 'search', href: '/catalog/search'},
+  ]},
+  {text: 'orders', href: '#' , subLinks: [
+    {text: 'new', href: '/orders/new'},
+    {text: 'pending', href: '/orders/pending'},
+    {text: 'history', href: '/orders/history'},
+  ]},
+  {text: 'account', href: '#', subLinks: [
+    {text: 'profile', href: '/account/profile'},
+    {text: 'sign out', href: '/account/signout'},
+  ]},
+];
 
 // Start the project by building a main content element using the following steps:
 // Select and cache the <main> element in a variable named mainEl.
@@ -108,24 +125,7 @@ subMenuEl.style.top = '0';
 /* ------------------ Part 4: Adding Menu Interaction ------------------ */
 
 /* For the sake of adding submenu links, some restructuring of the menuLinks array is needed ... */
-// update the menuLinks array as instructed
-var menuLinks = [
-  {text: 'about', href: '/about'},
-  {text: 'catalog', href: '#', subLinks: [
-    {text: 'all', href: '/catalog/all'},
-    {text: 'top selling', href: '/catalog/top'},
-    {text: 'search', href: '/catalog/search'},
-  ]},
-  {text: 'orders', href: '#' , subLinks: [
-    {text: 'new', href: '/orders/new'},
-    {text: 'pending', href: '/orders/pending'},
-    {text: 'history', href: '/orders/history'},
-  ]},
-  {text: 'account', href: '#', subLinks: [
-    {text: 'profile', href: '/account/profile'},
-    {text: 'sign out', href: '/account/signout'},
-  ]},
-];
+// update the menuLinks array as instructed above 
 
 // To show some webpage interactions 
 // 1) Select and cache the all of the <a> elements inside of topMenuEl in a variable named topMenuLinks.
@@ -258,18 +258,36 @@ function clickedActive(event){
     }
   }
 
-  
+  //event.target.style.visibility = "hidden";
+  topMenuEl.classList.toggle('show');
+    // if(clicked.classList.contains('active')){
+    //   //subMenuEl.style.top = '0';
+    //   clicked.classList.remove('active');
 
-  if(clicked.textContent !== "about"){
-    if(clicked.classList.contains('active')){
-      //subMenuEl.style.top = '0';
-      clicked.classList.remove('active');
-    }
-  }
+    // }
+  
   
 }
 
+
+// topMenuEl.addEventListener('click', function(){
+//   document.
+// })
+
 // helper function to add functionality to submenu
-// function buildSubmenu(){
-//   subMenuEl.
-// }
+function buildSubmenu(){
+  //subMenuEl.
+  // // Create an <a> anchor tag element. - .createElement()
+  // let newLink = document.createElement(`a`);
+  // // console.log(newLink)
+
+  // // On the new element, add an href attribute with its value set to the href property of the "link" object.
+  // newLink.setAttribute(`href`, link.href);
+
+  // // Set the new element's content to the value of the text property of the "link" object.
+  // newLink.textContent = link.text;
+
+  // // Append the new element to the topMenuEl element.
+  // topMenuEl.appendChild(newLink);
+  // console.log(topMenuEl);
+}
