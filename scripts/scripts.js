@@ -274,20 +274,36 @@ function clickedActive(event){
 //   document.
 // })
 
+// declare an empty array to collect subLinks objects
+let subLinksArray = [];
+// loop through the objects in menuLinks array
+for(const link_obj of menuLinks){
+  // if the object contains "subLinks" key
+  if("subLinks" in link_obj){
+    // append it to the subLinksArray
+    subLinksArray.push(link_obj.subLinks);
+  }
+}
+console.log(subLinksArray);
+
+
 // helper function to add functionality to submenu
-function buildSubmenu(){
-  //subMenuEl.
-  // // Create an <a> anchor tag element. - .createElement()
-  // let newLink = document.createElement(`a`);
-  // // console.log(newLink)
+function buildSubmenu(subLinksArray){
+  // clear the current text contents from subMenuEl
+  subMenuEl.textContent = "";
 
-  // // On the new element, add an href attribute with its value set to the href property of the "link" object.
-  // newLink.setAttribute(`href`, link.href);
+  // iterate through the subLinksArray
+  for(const sub of subLinksArray){
+    // // Create an <a> anchor tag element. - .createElement()
+    let newLink = document.createElement(`a`);
 
-  // // Set the new element's content to the value of the text property of the "link" object.
-  // newLink.textContent = link.text;
+    // On the new element, add an href attribute with its value set to the href property of the "link" object.
+    newLink.setAttribute(`href`, link.href);
 
-  // // Append the new element to the topMenuEl element.
-  // topMenuEl.appendChild(newLink);
-  // console.log(topMenuEl);
+    // Set the new element's content to the value of the text property of the "link" object.
+    newLink.textContent = link.text;
+
+    // Append the new element to the topMenuEl element.
+    subMenuEl.appendChild(newLink);
+  }
 }
