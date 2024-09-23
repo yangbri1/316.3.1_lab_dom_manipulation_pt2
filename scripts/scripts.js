@@ -18,20 +18,20 @@ var menuLinks = [
 
 // Start the project by building a main content element using the following steps:
 // Select and cache the <main> element in a variable named mainEl.
-let mainEl = document.getElementsByTagName('main');
-
+//let mainEl = document.getElementsByTagName('main');
+let mainEl = document.querySelector('main');
 // Do NOT have to use mainEl[0] if use .querySelectorAll('main'); above
 console.log(mainEl); 
 // Set the background color of mainEl to the value stored in the --main-bg CSS custom property.
 // Hint: Assign a string that uses the CSS var() function like this: 'var(--main-bg)'.
 // mainEl[0]. ommitted since we are using querySelectorAll() method
-mainEl[0].style.backgroundColor = 'var(--main-bg)'; // var from styles.css
+mainEl.style.backgroundColor = 'var(--main-bg)'; // var from styles.css
 // Setting background color using custom CSS properties
 
 // Set the content of mainEl to <h1>DOM Manipulation</h1>. There are a variety of ways to do this; pick whichever one that you think works best in this situation.
-mainEl[0].innerHTML = `<h1>DOM Manipulation</h1>`;
+mainEl.innerHTML = `<h1>DOM Manipulation</h1>`;
 // Add a class of flex-ctr to mainEl.
-mainEl[0].classList.add(`flex-ctr`);
+mainEl.classList.add(`flex-ctr`);
 // Hint: Use the Element.classList API.
 
 
@@ -176,15 +176,19 @@ function clickedActive(event){
 
   // adapted it from stackoverflow link below for our case
   if(document.querySelector('nav a.active')){
+    // just testing around using two of the same line...unsure why it works tho 🤔 if it ain't broken don't fix it I guess 
+    document.querySelector('nav a.active').classList.remove('active');
     document.querySelector('nav a.active').classList.remove('active');
   }
 
   // https://codesandbox.io/p/sandbox/event-delegation-example-546gf4?file=%2Fsrc%2Findex.js%3A25%2C18&from-embed
+  // use classList API to remove "active" class if presented or add it if not
   event.target.classList.toggle('active');
-  topMenuLinks.classList.remove('active');
-
+  //topMenuEl.target.classList.remove('active');
+  
+  //event.removeEventListener('click', function (){});
   // topMenuLinks.classList.toggle('active');
-  // mainEl[0].innerHTML = `<h1>DOM Manipulation</h1>`;
+
   // https://stackoverflow.com/questions/38990163/how-can-i-add-and-remove-an-active-class-to-an-element-in-pure-javascript
   // if (document.querySelector('#navList a.active') !== null) {
   //   document.querySelector('#navList a.active').classList.remove('active');
@@ -193,7 +197,7 @@ function clickedActive(event){
   
   // https://www.geeksforgeeks.org/how-to-add-an-active-class-to-the-current-element-using-javascript/#using-event-listeners
   // loop via topMenuinks and remove all active classes from them
-  // topMenuLinks.forEach(link => link.classList.remove('active'));
+  //topMenuLinks.forEach(link => link.classList.remove('active'));
   // add active status class to clicked link
   // topMenuLinks.classList.add('active');
   
@@ -205,7 +209,52 @@ function clickedActive(event){
     //   except for the "link" object for ABOUT), set the CSS top property of subMenuEl to 100%.
     //   b.  Otherwise, set the CSS top property of subMenuEl to 0.
     //   Hint: Caching the "link" object will come in handy for passing its subLinks array later
+
+    // var menuLinks = [
+    //   {text: 'about', href: '/about'},
+    //   {text: 'catalog', href: '#', subLinks: [
+    //     {text: 'all', href: '/catalog/all'},
+    //     {text: 'top selling', href: '/catalog/top'},
+    //     {text: 'search', href: '/catalog/search'},
+    //   ]},
+    //   {text: 'orders', href: '#' , subLinks: [
+    //     {text: 'new', href: '/orders/new'},
+    //     {text: 'pending', href: '/orders/pending'},
+    //     {text: 'history', href: '/orders/history'},
+    //   ]},
+    //   {text: 'account', href: '#', subLinks: [
+    //     {text: 'profile', href: '/account/profile'},
+    //     {text: 'sign out', href: '/account/signout'},
+    //   ]},
+    // ];
   
-
-
+  
+  for(const linkof of topMenuLinks){
+    // aside: topMenuLinks[0] yields <a href="/about">about</a>
+    console.log(linkof);
+    // iterate through the newly updated menuLinks array of objects
+    for(const link of menuLinks){
+      if(linkof.textContent != "about"){
+      //if(linkof.contains(link.href)){
+      //if(linkof.href === link.href){
+        // if(linkof)
+        // if the "click" element
+        if(linkof.textContent === "about" && link.hasOwnProperty("subLinks")){/* && link.text !== 'about'*/ 
+          // set the CSS 'top' property of subMenuEl to value of '100%'
+          subMenuEl.style.top = '100%';
+        }
+        else{// if(link.text === 'about'){
+          // set the CSS 'top' property of subMenuEl to value of '0'
+          subMenuEl.style.top = '0';
+        }
+      }
+      
+    }
+  }
+  
 }
+
+// helper function to add functionality to submenu
+// function buildSubmenu(){
+//   subMenuEl.
+// }
