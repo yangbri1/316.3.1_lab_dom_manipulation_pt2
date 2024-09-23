@@ -139,24 +139,21 @@ subMenuEl.style.top = '0';
 let topMenuLinks = topMenuEl.querySelectorAll('a'); // caches all of the anchor elements regardless
 // console.log(topMenuLinks);
 
-let subMenu = document.createElement("staywithme");
+//let subMenu = document.createElement("staywithme");
 
 // adding an event listener to topMenuEl
 topMenuEl.addEventListener('click', clickedActive);
 
-// callback function for the event listener above
 function clickedActive(event){
   // halts previous default behavior in event
   event.preventDefault();
 
   // assign event.target value to "clicked" variable 
   let clicked = event.target;
-  
-
 
   // if the input is NOT an anchor type, quit
   // Note: tagName property returns the tag name in UPPERCASE -- rec by Anton
-  if(event.target.tagName !== 'A') return; 
+  if(clicked.tagName !== 'A') return; 
   // if(event.localName !== 'a') return; -- shown by Dylan
   // if(event.node.nodeName !== 'a') return; -- rec by Sandra
   //https://stackoverflow.com/questions/7723188/what-properties-can-i-use-with-event-target
@@ -165,35 +162,18 @@ function clickedActive(event){
   // logs DOM element that .addEventListener() was called on
   //console.log(this.textContent);
 
-
-
   // 1.  The event listener should add the active class to the <a> element that was clicked, unless it was
       // already active, in which case it should remove it.
   // 2.  The event listener should remove the active class from each other <a> element
       // in topMenuLinks - whether the active class exists or not.
       // Hint: Removing a non-existent class from an element does not cause an error
 
-  // adapted it from stackoverflow link below for our case
-  // if(document.querySelector('nav a.active')){
-  //   // just testing around using two of the same line...unsure why it works tho 🤔 if it ain't broken don't fix it I guess 
-  //   document.querySelector('nav a.active').classList.remove('active');
-  //   document.querySelector('nav a.active').classList.remove('active');
-  // }
-
   // https://codesandbox.io/p/sandbox/event-delegation-example-546gf4?file=%2Fsrc%2Findex.js%3A25%2C18&from-embed
   // use classList API to remove "active" class if presented or add it if not
   clicked.classList.toggle('active');
   //topMenuEl.target.classList.remove('active');
   
-  //event.removeEventListener('click', function (){});
-  // topMenuLinks.classList.toggle('active');
 
-  // https://stackoverflow.com/questions/38990163/how-can-i-add-and-remove-an-active-class-to-an-element-in-pure-javascript
-  // if (document.querySelector('#navList a.active') !== null) {
-  //   document.querySelector('#navList a.active').classList.remove('active');
-  // }
-  // event.target.className = "active";
-  
   // https://www.geeksforgeeks.org/how-to-add-an-active-class-to-the-current-element-using-javascript/#using-event-listeners
   // loop via topMenuinks and remove all active classes from them
   topMenuLinks.forEach(link => {
@@ -202,8 +182,6 @@ function clickedActive(event){
       console.log("Idle");
     } 
   });
-  // add active status class to clicked link
-  // topMenuLinks.classList.add('active');
   
 /* ------------------ Part 5: Adding Submenu Interaction (1/2) ------------------ */  
 
@@ -242,8 +220,13 @@ function clickedActive(event){
       else{
         // it won't drop down
         subMenuEl.style.top = '0';
+        // display as pure text
+        // mainEl.textContent = `<h1>About</h1>`;
+        // display text w/ styling (if both enabled due to sequencing innerHTML would activate)
+        mainEl.innerHTML = `<h1>About</h1>`;
       }
     }
+    
   // }
 
   //event.target.style.visibility = "hidden";
@@ -256,17 +239,36 @@ function clickedActive(event){
 
 
   // declare an empty array to collect subLinks objects
-  let subLinksArray = [];
-  // loop through the objects in menuLinks array
-  for(const link_obj of menuLinks){
-    // if the object contains "subLinks" key
-    if("subLinks" in link_obj){
-      // append it to the subLinksArray
-      subLinksArray.push(link_obj.subLinks);
+  // let subLinksArray = [];
+  // // loop through the objects in menuLinks array
+  // for(const link_obj of menuLinks){
+  //   // if the object contains "subLinks" key
+  //   if("subLinks" in link_obj){
+  //     // append it to the subLinksArray
+  //     // subLinksArray.push(link_obj.subLinks[0]);
+  //     for(let link_index in link_obj){
+  //       // subLinksArray.push(link_obj.subLinks[link_index]);
+  //       subLinksArray.push(link_obj[link_index]);
+  //       // ... index not quite right...
+  //     }
+      
+  //   }
+  // }
+  // console.log(subLinksArray);
+
+  /* all about that nested for-loop and more above or use the built-in .find() method */
+  // array method .find() takes in a function as an arg (callback, here it's nameless too) if yields "true" ...
+  // would return the 1st element that passes the conditions
+  let clickedLink = menuLinks.find(function(link){
+    // the condition being ... the menuLinks' object value being equal to event.target's textContent
+    if(link.text === clicked.textContent){
+      return true;
     }
-  }
-  
-}
+  })
+  // invoked buildSumenu helper function
+  buildSubmenu(clickedLink.subLinks);
+
+} // end of function
 
 // topMenuEl.addEventListener('click', function(){
 //   document.
@@ -293,8 +295,16 @@ subMenuEl.addEventListener('click', (event) =>{
     } 
     
   });
-  let updated_string = `<h1> ${clicked.textContent} </h1>`;
-    mainEl.innerHTML = updated_string;
+  // reassign each event.target.textContent w/ an capitalized 1st char using string manipulation
+  clicked.textContent = clicked.textContent[0].toUpperCase() + clicked.textContent.slice(1);
+  // declare it to string updated_string
+  // originally has <h1> tags for textContent format -- but that would just print the <h1> as text form..
+  let updated_string = `<h1>${clicked.textContent}</h1>`; 
+  // updating mainEl's textContent/innerHTML 
+  // mainEl.textContent = `<h1>${updated_string}</h1>`;
+  // so we used innerHTML to show the font-size as well (not in pure text)
+  mainEl.innerHTML = `<h1>${updated_string}</h1>`;
+  console.log(mainEl); // ABT
 
 });
 
@@ -313,12 +323,12 @@ subMenuEl.addEventListener('click', (event) =>{
 
 
 // helper function to add functionality to submenu
-function buildSubmenu(subLinksArray){
+function buildSubmenu(someArray){
   // clear the current text contents from subMenuEl
   subMenuEl.textContent = "";
 
   // iterate through the subLinksArray
-  for(const link of subLinksArray){
+  for(const link of someArray){
 
     // create a new <a> anchor element
     let newLink = document.createElement(`a`);
