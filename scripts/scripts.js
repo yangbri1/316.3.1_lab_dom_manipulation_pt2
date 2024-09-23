@@ -174,6 +174,9 @@ function clickedActive(event){
   // halts previous default behavior in event
   event.preventDefault();
 
+  // assign event.target value to "clicked" variable 
+  let clicked = event.target;
+
   // adapted it from stackoverflow link below for our case
   if(document.querySelector('nav a.active')){
     // just testing around using two of the same line...unsure why it works tho 🤔 if it ain't broken don't fix it I guess 
@@ -183,7 +186,7 @@ function clickedActive(event){
 
   // https://codesandbox.io/p/sandbox/event-delegation-example-546gf4?file=%2Fsrc%2Findex.js%3A25%2C18&from-embed
   // use classList API to remove "active" class if presented or add it if not
-  event.target.classList.toggle('active');
+  clicked.classList.toggle('active');
   //topMenuEl.target.classList.remove('active');
   
   //event.removeEventListener('click', function (){});
@@ -228,27 +231,39 @@ function clickedActive(event){
     //   ]},
     // ];
   
-  
+
   for(const linkof of topMenuLinks){
     // aside: topMenuLinks[0] yields <a href="/about">about</a>
     console.log(linkof);
     // iterate through the newly updated menuLinks array of objects
     for(const link of menuLinks){
-      if(linkof.textContent != "about"){
+      //if(linkof.textContent != "about"){
       //if(linkof.contains(link.href)){
       //if(linkof.href === link.href){
-        // if(linkof)
-        // if the "click" element
-        if(linkof.textContent === "about" && link.hasOwnProperty("subLinks")){/* && link.text !== 'about'*/ 
+      
+      // if it wasn't 'about' that was clicked
+      if(clicked.textContent !== "about"){
+        // and if the menuLinks contains the "subLinks" key
+        if(link.hasOwnProperty("subLinks")){/* && link.text !== 'about'*/ 
           // set the CSS 'top' property of subMenuEl to value of '100%'
           subMenuEl.style.top = '100%';
         }
-        else{// if(link.text === 'about'){
+        // otherwise the dropdown menu remain stationary
+        else{ // if(link.text === 'about'){
           // set the CSS 'top' property of subMenuEl to value of '0'
           subMenuEl.style.top = '0';
         }
       }
       
+    }
+  }
+
+  
+
+  if(clicked.textContent !== "about"){
+    if(clicked.classList.contains('active')){
+      //subMenuEl.style.top = '0';
+      clicked.classList.remove('active');
     }
   }
   
